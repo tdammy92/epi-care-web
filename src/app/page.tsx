@@ -1,7 +1,7 @@
-export const HomePage = () => {
+import Dashboard from "./dashboard/page"
+
+export default function Home () {
   return (
-    <div>
-      hi
-    </div>
+   <Dashboard />
   )
 }
