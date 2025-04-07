@@ -1,3 +1,5 @@
+import { rolesType } from "@/app/sign-up/page";
+
 export interface Iprofile {
   profile: Profile;
   _id: string;
@@ -24,3 +26,21 @@ export interface AccessT {
   path: string;
   icon: string;
 }
+
+// export interface RegisterPayload {
+//   email: string
+//   password: string
+//   confirmPassword: string
+//   role: rolesType
+//   profile: RegisterProfilePayload
+// }
+
+// export interface RegisterProfilePayload  {
+//   firstName: string
+//   lastName: string
+//   phoneNumber: string
+//   dateOfBirth: string
+//   address: string
+//   role: rolesType
+//   licenseNumber: string
+// }

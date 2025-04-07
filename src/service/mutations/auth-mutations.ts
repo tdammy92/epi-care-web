@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query"
-import { handleLogin } from "../api/api-handlers/auth-handler"
+import { handleLogin, handleRegister } from "../api/api-handlers/auth-handler"
 
 
 export const useLogin = () => {
@@ -7,6 +7,16 @@ export const useLogin = () => {
         mutationFn: handleLogin, onMutate: () => { },
         onSuccess: (data, variable, context) => {
             console.log("data from login", JSON.stringify(data, null, 3))
+        },
+        onError: () => { }
+    })
+}
+
+export const useRegister = () => {
+    return useMutation({
+        mutationFn: handleRegister, onMutate: () => { },
+        onSuccess: (data, variable, context) => {
+            console.log("data from register", JSON.stringify(data, null, 3))
         },
         onError: () => { }
     })
