@@ -1,4 +1,3 @@
-import { rolesType } from "@/app/sign-up/page";
 
 export interface Iprofile {
   profile: Profile;
