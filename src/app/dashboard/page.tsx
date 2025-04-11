@@ -8,23 +8,19 @@ import React, { useEffect } from "react";
 import PatientDashboard from "./components/PatientDashboard";
 
 const Dashboard = () => {
-  // const IsLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
-//   const router = useRouter();
+  const IsLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const router = useRouter();
  
-//  useEffect(() => {
-//   if (!IsLoggedIn) {
-//     router.push("/sign-in");
-//   }
-//  }, [IsLoggedIn, router])
+ useEffect(() => {
+  if (!IsLoggedIn) {
+    router.push("/sign-in");
+  }
+ }, [IsLoggedIn, router])
   
   return (
-    <div className="min-h-screen bg-gray-50">
-      <TopNav />
-      <div className="flex">
-      <SideMenu />
+    <main className="flex-1 p-8">
       <PatientDashboard />
-      </div>
-    </div>
+      </main>
   );
 };
 

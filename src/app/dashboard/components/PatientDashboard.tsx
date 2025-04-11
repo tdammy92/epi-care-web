@@ -20,7 +20,7 @@ const PatientStats = [
 
 const PatientDashboard = () => {
   return (
-    <main className="flex-1 p-8">
+    <main>
         <DateFilter />
         <WelcomeBanner ImageSource={PatientImage} label='patients' />
         <div className="grid grid-cols-4 gap-6 mb-8">

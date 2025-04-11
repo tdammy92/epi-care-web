@@ -1,12 +1,14 @@
 "use client";
 import { useLogin } from "@/service/mutations/auth-mutations";
-import { useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { addUserDetails, loginUser } from "@/store/auth-store";
 import { HeartPulseIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const SignIn = () => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useAppDispatch();
   const { mutateAsync: login, isPending: logginIn } = useLogin();
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -27,11 +29,15 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = login(formData);
-    console.log("Login response", response);
-    console.log("Login form submitted:", formData);
+    const response = await login(formData);
+    if (response?.data){
+      dispatch(addUserDetails(response?.data?.user))
+      dispatch(loginUser())
+      router.push("/dashboard")
+    } else {
+    }
   };
 
   return (
