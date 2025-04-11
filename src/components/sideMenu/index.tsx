@@ -1,27 +1,22 @@
-'use client'
+"use client";
 
 import React from "react";
-import {
- 
-  Phone,
-  ChevronLeft,
-} from "lucide-react";
+import { Phone, ChevronLeft } from "lucide-react";
 import Avatar from "../avatar";
 import { useAppSelector } from "@/store";
 import NavIcon from "../navIcon";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setIsSidebarCollapsed } from "@/store/auth-store";
-// import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation"; 
 
 const SideMenu = () => {
-  const dispatch = useDispatch()
-  const isSidebarCollapsed = useAppSelector((state) => state.auth.isSidebarCollapsed)
-  const user = useAppSelector((state) => state.auth.UserDetails)
-  // console.log("❤️❤️❤️❤️", JSON.stringify(user,null,3))
-  // const pathname = usePathname();
-  // const isActive =
-  //   pathname === href || (pathname === "/" && href === "/dashboard");
+  const dispatch = useDispatch();
+  const isSidebarCollapsed = useAppSelector(
+    (state) => state.auth.isSidebarCollapsed
+  );
+  const user = useAppSelector((state) => state.auth.UserDetails);
+  const pathname = usePathname(); 
 
   return (
     <aside
@@ -46,46 +41,46 @@ const SideMenu = () => {
         } mb-8`}
       >
         <div className="w-12 h-12 rounded-full bg-gray-300 overflow-hidden flex-shrink-0">
-          {/* <Image
-            src=""
-            alt="Profile"
-            width={48}
-            height={48}
-          /> */}
-
-          <Avatar size={48} name={`${user?.profile.firstName} ${user?.profile.lastName}`} />
+          <Avatar
+            size={48}
+            name={`${user?.profile.firstName} ${user?.profile.lastName}`}
+          />
         </div>
         {!isSidebarCollapsed && (
           <div>
-            <div className="font-semibold">{`${user?.profile.firstName} ${user?.profile.lastName}`} </div>
-            <div className="text-sm text-gray-500">{(user?.role)?.toUpperCase()}</div>
+            <div className="font-semibold">
+              {`${user?.profile.firstName} ${user?.profile.lastName}`}{" "}
+            </div>
+            <div className="text-sm text-gray-500">
+              {user?.role?.toUpperCase()}
+            </div>
           </div>
         )}
       </div>
 
       <nav className="space-y-2">
-        {/* <div
-          className={`flex items-center ${
-            isSidebarCollapsed ? "justify-center" : "space-x-3"
-          } p-3 bg-indigo-50 text-indigo-600 rounded-lg`}
-        >
-          <Building2 className="w-5 h-5" />
-          {!isSidebarCollapsed && <span>Hospital Dashboard</span>}
-        </div> */}
-        {user?.access?.map((item, index) => (
-          <Link
-          href={item?.path}
-            key={index}
-            className={`flex items-center ${
-              isSidebarCollapsed ? "justify-center" : "space-x-3"
-            } p-3 hover:bg-gray-100 rounded-lg cursor-pointer`}
-            title={isSidebarCollapsed ? item.name : ""}
-          >
-            {/* <item.icon className="w-5 h-5" /> */}
-            <NavIcon className="w-5 h-5" iconName={item?.icon} />
-            {!isSidebarCollapsed && <span>{item.name}</span>}
-          </Link>
-        ))}
+        {user?.access?.map((item, index) => {
+          const isActive =
+            pathname === item?.path || pathname.startsWith(item?.path + "/");
+
+          return (
+            <Link
+              href={item?.path}
+              key={index}
+              className={`flex items-center ${
+                isSidebarCollapsed ? "justify-center" : "space-x-3"
+              } p-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                isActive
+                  ? "bg-indigo-100 text-indigo-600 font-semibold"
+                  : "hover:bg-gray-100 text-gray-700"
+              }`}
+              title={isSidebarCollapsed ? item.name : ""}
+            >
+              <NavIcon className="w-5 h-5" iconName={item?.icon} />
+              {!isSidebarCollapsed && <span>{item.name}</span>}
+            </Link>
+          );
+        })}
       </nav>
 
       <div
