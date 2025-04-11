@@ -2,9 +2,10 @@ import { authStoreType } from "@/types/store-type/authStore";
 
 
 ;
-const initsialState: authStoreType = {
+const initialState: authStoreType = {
   isLoggedIn: false,
   UserDetails: null,
+  isSidebarCollapsed: false,
 };
 
-export default initsialState;
+export default initialState;

@@ -9,6 +9,7 @@ export const AuthSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state: authStoreType) => {
+      console.log("From Deep in Redux")
       state.isLoggedIn = true;
     },
     logOutUser: state => {
@@ -16,12 +17,16 @@ export const AuthSlice = createSlice({
     },
     addUserDetails: (state: authStoreType, {payload}: PayloadAction<Iprofile>) => {
       state.UserDetails = payload;
-    }
+    },
+    
+    setIsSidebarCollapsed: (state, action: PayloadAction<boolean>) => {
+      state.isSidebarCollapsed = action.payload;
+  },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {loginUser, logOutUser, addUserDetails} =
+export const {loginUser, logOutUser, addUserDetails, setIsSidebarCollapsed} =
   AuthSlice.actions;
 
 // export reducer function

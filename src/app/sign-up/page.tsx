@@ -12,7 +12,6 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import "react-phone-number-input/style.css";
-import { useRouter } from "next/navigation";
 
 // Constants
 const AccountType = [
@@ -67,9 +66,9 @@ interface FormData {
   guardianPhone: string;
   relationShip: string;
   // Professional Information (General)
-  license: string;
+  licenseNumber: string;
   // Doctor-specific fields
-  specialty: string;
+  specialization: string;
   graduationYear: string;
   affiliatedHospital: string;
   hospitalID: string;
@@ -104,8 +103,8 @@ const defaultFormData: FormData = {
   guardianFullName: "",
   guardianPhone: "",
   relationShip: "",
-  license: "",
-  specialty: "",
+  licenseNumber: "",
+  specialization: "",
   graduationYear: "",
   affiliatedHospital: "",
   hospitalID: "",
@@ -123,6 +122,9 @@ const defaultFormData: FormData = {
   fieldWorkExperience: "",
 };
 
+type SignUpProps = {
+  onSwitchToLogin: () => void;
+}
 
 
 // Step 1: Personal Information
@@ -423,11 +425,11 @@ const RoleSpecificStep = ({
             </label>
             <input
               type="text"
-              id="license"
-              name="license"
+              id="licenseNumber"
+              name="licenseNumber"
               placeholder="e.g. MD-123456"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-indigo-600"
-              value={formData.license}
+              value={formData.licenseNumber}
               onChange={handleChange}
               required
             />
@@ -437,10 +439,10 @@ const RoleSpecificStep = ({
               Specialty <span className="text-red-500">*</span>
             </label>
             <select
-              id="specialty"
-              name="specialty"
+              id="specialization"
+              name="specialization"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-indigo-600"
-              value={formData.specialty}
+              value={formData.specialization}
               onChange={handleChange}
               required
             >
@@ -521,11 +523,11 @@ const RoleSpecificStep = ({
             </label>
             <input
               type="text"
-              id="license"
-              name="license"
+              id="licenseNumber"
+              name="licenseNumber"
               placeholder="e.g. RN-123456"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-indigo-600"
-              value={formData.license}
+              value={formData.licenseNumber}
               onChange={handleChange}
               required
             />
@@ -604,11 +606,11 @@ const RoleSpecificStep = ({
             </label>
             <input
               type="text"
-              id="license"
-              name="license"
+              id="licenseNumber"
+              name="licenseNumber"
               placeholder="e.g. LT-123456"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-indigo-600"
-              value={formData.license}
+              value={formData.licenseNumber}
               onChange={handleChange}
               required
             />
@@ -668,11 +670,11 @@ const RoleSpecificStep = ({
             </label>
             <input
               type="text"
-              id="license"
-              name="license"
+              id="licenseNumber"
+              name="licenseNumber"
               placeholder="e.g. CHW-123456"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-indigo-600"
-              value={formData.license}
+              value={formData.licenseNumber}
               onChange={handleChange}
             />
           </div>
@@ -758,10 +760,9 @@ const FinalConfirmationStep = () => (
 );
 
 // Main SignUp component
-const SignUp = () => {
+const SignUp = ({onSwitchToLogin}: SignUpProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>(defaultFormData);
-  const router = useRouter();
   const [selectedAccount, setSelectedAccount] = useState<rolesType>("patient");
 
   const { mutateAsync: register, isPending } = useRegister();
@@ -797,11 +798,11 @@ const SignUp = () => {
         lastName: formData.fullName.split(" ")[1] || "",
         dateOfBirth: formData.dateOfBirth,
         phoneNumber: formData.phoneNumber,
-        licenseNumber: formData.license,
+        licenseNumber: formData.licenseNumber,
         address: formData.address,
         role: selectedAccount,
         ...(selectedAccount === "doctor" && {
-          specialty: formData.specialty,
+          specialty: formData.specialization,
           graduationYear: formData.graduationYear,
           affiliatedHospital: formData.affiliatedHospital,
           hospitalID: formData.hospitalID,
@@ -923,7 +924,7 @@ const SignUp = () => {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <button onClick={() => router.push('/sign-in')} className="text-indigo-600 hover:underline">
+            <button onClick={onSwitchToLogin} className="text-indigo-600 hover:underline">
               Login
             </button>
           </p>

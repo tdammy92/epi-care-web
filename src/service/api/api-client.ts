@@ -51,7 +51,7 @@ const client = async (
       data,
       ...customConfig,
     });
-    return response.data
+    return response
   } catch (error) {
     console.error("Request failed with error:", error);
   }
