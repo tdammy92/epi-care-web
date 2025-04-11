@@ -6,13 +6,13 @@ import PatientImage from '@/assets/patient.svg'
 
 const PatientStats = [
     {
-      count: 890,
-      label: "New Patients",
+      count: 4,
+      label: "No. of Visits",
       color: "text-green-500",
     },
     {
       count: 360,
-      label: "OPD Patients",
+      label: "Cost of last visit",
       color: "text-indigo-500",
     }
   

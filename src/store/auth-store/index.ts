@@ -12,8 +12,8 @@ export const AuthSlice = createSlice({
       console.log("From Deep in Redux")
       state.isLoggedIn = true;
     },
-    logOutUser: state => {
-      state.isLoggedIn = false;
+    logOutUser: () => {
+      return initialState; 
     },
     addUserDetails: (state: authStoreType, {payload}: PayloadAction<Iprofile>) => {
       state.UserDetails = payload;
