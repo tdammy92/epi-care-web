@@ -3,14 +3,13 @@
 import React from "react";
 import SideMenu from "@/components/sideMenu";
 import TopNav from "@/components/topNav";
-import { store, useAppSelector } from "@/store";
+import { store } from "@/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
+import AuthGuard from "./AuthGuard";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
-  const isSidebarCollapsed = useAppSelector(
-    (state) => state.auth.isSidebarCollapsed
-  );
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -43,7 +42,9 @@ const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
+        <AuthGuard>
         <DashboardLayout>{children}</DashboardLayout>
+        </AuthGuard>
       </Provider>
     </QueryClientProvider>
   );

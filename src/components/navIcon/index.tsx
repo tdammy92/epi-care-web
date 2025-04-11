@@ -6,6 +6,7 @@ import {
   FolderOpen,
   Gauge,
   HandHeart,
+  Handshake,
   MessageSquareText,
   Pill,
   ReceiptText,
@@ -47,6 +48,8 @@ const NavIcon = ({ iconName, className }: Props) => {
       return <BriefcaseMedical className={className} />;
     case "results":
       return <ReceiptText className={className} />;
+    case "referral":
+      return <Handshake className={className} />;
 
     default:
       return <div />;

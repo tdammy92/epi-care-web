@@ -12,13 +12,16 @@ import NavIcon from "../navIcon";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setIsSidebarCollapsed } from "@/store/auth-store";
+// import { usePathname } from "next/navigation";
 
 const SideMenu = () => {
   const dispatch = useDispatch()
   const isSidebarCollapsed = useAppSelector((state) => state.auth.isSidebarCollapsed)
   const user = useAppSelector((state) => state.auth.UserDetails)
-  console.log("❤️❤️❤️❤️", JSON.stringify(user,null,3))
-
+  // console.log("❤️❤️❤️❤️", JSON.stringify(user,null,3))
+  // const pathname = usePathname();
+  // const isActive =
+  //   pathname === href || (pathname === "/" && href === "/dashboard");
 
   return (
     <aside

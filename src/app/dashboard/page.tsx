@@ -1,14 +1,14 @@
 "use client";
 
-import SideMenu from "@/components/sideMenu";
-import TopNav from "@/components/topNav";
 import { useAppSelector } from "@/store";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import PatientDashboard from "./components/PatientDashboard";
+import DoctorDashboard from "./components/DoctorDashboard";
 
 const Dashboard = () => {
   const IsLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
+  const user = useAppSelector((state) => state.auth.UserDetails);
   const router = useRouter();
  
  useEffect(() => {
@@ -19,9 +19,24 @@ const Dashboard = () => {
   
   return (
     <main className="flex-1 p-8">
-      <PatientDashboard />
+      <RenderDashboard role={user?.role} />
       </main>
   );
 };
 
 export default Dashboard;
+
+const RenderDashboard = ({role}: {role: string | undefined}) => {
+  switch (role) {
+    case "patient":
+      return <PatientDashboard />
+    case "doctor":
+      return <DoctorDashboard />
+    
+      
+      
+  
+    default:
+      return <div />
+  }
+}

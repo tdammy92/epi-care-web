@@ -6,7 +6,12 @@ import { HeartPulseIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const SignIn = () => {
+
+type SignInProps = {
+  onSwitchToSignup: () => void;
+}
+
+const SignIn = ({onSwitchToSignup}:SignInProps) => {
   const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
   const dispatch = useAppDispatch();
   const { mutateAsync: login, isPending: logginIn } = useLogin();
@@ -101,7 +106,7 @@ const SignIn = () => {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{" "}
-            <button onClick={() => router.push("/sign-up")} className="text-indigo-600 hover:underline">
+            <button onClick={onSwitchToSignup} className="text-indigo-600 hover:underline">
               Sign up for Free
             </button>
           </p>
