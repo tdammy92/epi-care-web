@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Calendar as CalendarIcon, Search, Clock } from "lucide-react";
+import { useState } from "react";
+import { Calendar as CalendarIcon, Search } from "lucide-react";
 import { Calendar } from "@/components/calender";
-import Image from "next/image";
 import Avatar from "@/components/avatar";
 import { useAppSelector } from "@/store";
 
@@ -34,121 +33,19 @@ const doctors = [
   },
 ];
 
-const patients = [
-  {
-    id: 1,
-    name: "John Smith",
-    age: 45,
-    condition: "Hypertension",
-    lastVisit: "2025-03-15",
-    avatar: null,
-  },
-  {
-    id: 2,
-    name: "Emma Johnson",
-    age: 32,
-    condition: "Migraine",
-    lastVisit: "2025-03-28",
-    avatar: null,
-  },
-  {
-    id: 3,
-    name: "Robert Davis",
-    age: 58,
-    condition: "Diabetes Type 2",
-    lastVisit: "2025-04-02",
-    avatar: null,
-  },
-  {
-    id: 4,
-    name: "Sophie Miller",
-    age: 7,
-    condition: "Annual Checkup",
-    lastVisit: "2025-03-10",
-    avatar: null,
-  },
-  {
-    id: 5,
-    name: "James Wilson",
-    age: 62,
-    condition: "Arrhythmia",
-    lastVisit: "2025-04-05",
-    avatar: null,
-  },
-];
-
-const upcomingAppointments = [
-  {
-    id: 1,
-    patientName: "John Smith",
-    date: "2025-04-12",
-    time: "10:00 AM",
-    reason: "Follow-up",
-    status: "Confirmed"
-  },
-  {
-    id: 2,
-    patientName: "Emma Johnson",
-    date: "2025-04-12",
-    time: "11:30 AM",
-    reason: "Consultation",
-    status: "Confirmed"
-  },
-  {
-    id: 3,
-    patientName: "Sophie Miller",
-    date: "2025-04-13",
-    time: "09:00 AM",
-    reason: "Vaccination",
-    status: "Pending"
-  },
-  {
-    id: 4,
-    patientName: "James Wilson",
-    date: "2025-04-14",
-    time: "02:30 PM",
-    reason: "ECG Results",
-    status: "Confirmed"
-  }
-];
-
 const timeSlots = [
   "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM",
   "11:00 AM", "11:30 AM", "02:00 PM", "02:30 PM",
   "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM"
 ];
 
-export default function Appointments() {
+export default function PatientBooking() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [showBookingDialog, setShowBookingDialog] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredData, setFilteredData] = useState({
-    patients: patients,
-    appointments: upcomingAppointments
-  });
-  const user = useAppSelector((state)=> state.auth.UserDetails)
-
-  useEffect(() => {
-    if (searchTerm) {
-      setFilteredData({
-        patients: patients.filter(patient => 
-          patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          patient.condition.toLowerCase().includes(searchTerm.toLowerCase())
-        ),
-        appointments: upcomingAppointments.filter(appointment => 
-          appointment.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          appointment.reason.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      });
-    } else {
-      setFilteredData({
-        patients: patients,
-        appointments: upcomingAppointments
-      });
-    }
-  }, [searchTerm]);
+  
+  const user = useAppSelector((state) => state.auth.UserDetails) || null;
 
   const handleDateSelect = (date: Date | undefined) => {
     setSelectedDate(date);
@@ -167,149 +64,6 @@ export default function Appointments() {
     setSelectedTime(null);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  };
-
-  // Doctor View
-  if (user?.role === "doctor") {
-    return (
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Doctor Dashboard</h1>
-              <p className="text-gray-500">Manage your patients and appointments</p>
-            </div>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="search"
-                placeholder="Search patients or appointments..."
-                className="pl-10 pr-4 py-2 border rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                onChange={(e) => setSearchTerm(e.target.value)}
-                value={searchTerm}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-12 gap-8">
-            {/* Upcoming Appointments */}
-            <div className="col-span-7">
-              <div className="bg-white p-6 rounded-xl shadow-sm h-full">
-                <h2 className="text-lg font-semibold mb-4 flex items-center">
-                  <Clock className="w-5 h-5 mr-2 text-indigo-600" />
-                  Your Upcoming Appointments
-                </h2>
-                
-                {filteredData.appointments.length > 0 ? (
-                  <div className="space-y-4">
-                    {filteredData.appointments.map((appointment) => (
-                      <div key={appointment.id} className="p-4 border border-gray-200 rounded-lg hover:border-indigo-200 transition-colors">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h3 className="font-medium text-lg">{appointment.patientName}</h3>
-                            <p className="text-gray-600 mt-1">{appointment.reason}</p>
-                          </div>
-                          <div className="text-right">
-                            <span className={`inline-block px-2 py-1 text-xs rounded-full ${
-                              appointment.status === "Confirmed" 
-                                ? "bg-green-100 text-green-800" 
-                                : "bg-yellow-100 text-yellow-800"
-                            }`}>
-                              {appointment.status}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="mt-3 flex items-center text-sm text-gray-500">
-                          <CalendarIcon className="w-4 h-4 mr-1" />
-                          <span>{formatDate(appointment.date)} at {appointment.time}</span>
-                        </div>
-                        <div className="mt-3 flex justify-end space-x-2">
-                          <button className="px-3 py-1 text-xs bg-indigo-50 text-indigo-600 rounded-md hover:bg-indigo-100">
-                            View Details
-                          </button>
-                          <button className="px-3 py-1 text-xs bg-red-50 text-red-600 rounded-md hover:bg-red-100">
-                            Reschedule
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    No appointments found for your search.
-                  </div>
-                )}
-
-                {filteredData.appointments.length > 0 && filteredData.appointments.length < upcomingAppointments.length && (
-                  <div className="mt-4 text-center">
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
-                      View all appointments
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Patient List */}
-            <div className="col-span-5">
-              <div className="bg-white p-6 rounded-xl shadow-sm h-full">
-                <h2 className="text-lg font-semibold mb-4">Your Patients</h2>
-                
-                {filteredData.patients.length > 0 ? (
-                  <div className="space-y-3">
-                    {filteredData.patients.map((patient) => (
-                      <div 
-                        key={patient.id} 
-                        className="flex items-center p-3 hover:bg-gray-50 rounded-lg cursor-pointer border border-transparent hover:border-gray-200"
-                      >
-                        <Avatar name={patient.name} size={40} round />
-                        <div className="ml-3 flex-1">
-                          <div className="flex justify-between">
-                            <h3 className="font-medium">{patient.name}</h3>
-                            <span className="text-sm text-gray-500">{patient.age} yrs</span>
-                          </div>
-                          <p className="text-sm text-gray-600 mt-1">{patient.condition}</p>
-                          <p className="text-xs text-gray-500 mt-1">Last visit: {formatDate(patient.lastVisit)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    No patients found for your search.
-                  </div>
-                )}
-
-                {filteredData.patients.length > 0 && filteredData.patients.length < patients.length && (
-                  <div className="mt-4 text-center">
-                    <button className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
-                      View all patients
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="mt-8">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h2 className="text-lg font-semibold mb-4">Schedule Overview</h2>
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={handleDateSelect}
-                className="rounded-md"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Patient View (Original)
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
